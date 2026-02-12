@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary mb-4">
+        <div class="container"><span class="navbar-brand">PlacementPro: <%= student.name %></span></div>
+    </nav>
+    <div class="container">
+        <h3>Available Jobs (Your CGPA: <%= student.cgpa %>)</h3>
+        <div class="row mt-4">
+            <% jobs.forEach(job => { %>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm p-3">
+                        <h5><%= job.company %></h5>
+                        <p class="text-muted"><%= job.role %> | <%= job.salary %></p>
+                        <p class="small text-danger">Required: <%= job.minCGPA %> CGPA</p>
+                        
+                        <form action="/apply" method="POST">
+                            <input type="hidden" name="student_id" value="<%= student.id %>">
+                            <input type="hidden" name="job_id" value="<%= job.id %>">
+                            
+                            <% if(student.cgpa >= job.minCGPA) { %>
+                                <button type="submit" class="btn btn-outline-primary w-100">Apply Now</button>
+                            <% } else { %>
+                                <button type="button" class="btn btn-secondary w-100" disabled>Not Eligible</button>
+                            <% } %>
+                        </form>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>
